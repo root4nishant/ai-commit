@@ -1,12 +1,17 @@
 {
-  "name": "ai-commit",
+  "name": "gemmit",
   "version": "1.0.0",
   "description": "Auto-generate Git commit messages using Gemini AI.",
   "main": "index.js",
   "bin": {
     "ai-commit": "./bin/commit"
   },
-  "keywords": [],
+  "keywords": [
+    "git",
+    "ai",
+    "commit",
+    "gemini"
+  ],
   "author": "root4nishant",
   "license": "MIT"
 }
