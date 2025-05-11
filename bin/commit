@@ -37,8 +37,8 @@ fi
 ESCAPED_DIFF=$(printf '%s' "$DIFF" | "$PYTHON_PATH" -c 'import json,sys; print(json.dumps(sys.stdin.read())[1:-1])')
 
 # === Show diff sent to Gemini ===
-echo "DIFF SENT TO GEMINI:"
-echo "$ESCAPED_DIFF"
+# echo "DIFF SENT TO GEMINI:"
+# echo "$ESCAPED_DIFF"
 
 # === 5️Construct prompt and payload ===
 PROMPT="Write only one concise Git commit message for the following code changes. No explanations, no formatting, just the message in maximum 5-10 words."
@@ -65,8 +65,8 @@ RESPONSE=$(curl -s -X POST \
   "$GEMINI_URL?key=$API_KEY")
 
 # === 7️Debug output ===
-echo "🔍 Gemini API Response:"
-echo "$RESPONSE"
+# echo "🔍 Gemini API Response:"
+# echo "$RESPONSE"
 
 # === 8️Extract commit message ===
 COMMIT_MSG=$(echo "$RESPONSE" | grep -oP '"text":\s*"\K[^"]+' | head -n 1)
