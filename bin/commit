@@ -2,7 +2,7 @@
 
 
 # === LOAD USER CONFIG ===
-source "$(dirname "$1")/config.sh"
+source "$(dirname "$0")/../config/config.sh"
 
 # === DYNAMIC CONFIG ===
 GEMINI_URL="https://generativelanguage.googleapis.com/v1beta/models/$MODEL_NAME:generateContent"
