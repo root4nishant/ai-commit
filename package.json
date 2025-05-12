@@ -6,6 +6,9 @@
   "bin": {
     "ai-commit": "./bin/commit"
   },
+  "scripts": {
+  "gemmit": "bash ./bin/commit"
+},
   "keywords": [
     "git",
     "ai",
