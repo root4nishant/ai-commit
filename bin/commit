@@ -8,7 +8,7 @@ source "$(dirname "$0")/../config/config.sh"
 GEMINI_URL="https://generativelanguage.googleapis.com/v1beta/models/$MODEL_NAME:generateContent"
 MAX_LENGTH=2000
 
-# === Optional prefix like: ./commit.sh -- "fix #1" ===
+# === prefix like: ./commit.sh -- "fix #1" ===
 PREFIX=""
 for i in "$@"; do
   if [[ "$i" == "--" ]]; then
@@ -18,29 +18,29 @@ for i in "$@"; do
   fi
 done
 
-# === 1️Check for changes ===
+# === Check for changes ===
 if [[ -z $(git status --porcelain) ]]; then
     echo "No changes to commit."
     exit 0
 fi
 
-# === 2️Stage changes ===
+# === Stage changes ===
 git add .
 
-# === 3️Get and trim diff ===
+# === Get and trim diff ===
 DIFF=$(git diff --cached)
 if [ ${#DIFF} -gt $MAX_LENGTH ]; then
     DIFF="${DIFF:0:$MAX_LENGTH}..."
 fi
 
-# === 4️Escape diff for JSON using Python ===
+# === Escape diff for JSON using Python ===
 ESCAPED_DIFF=$(printf '%s' "$DIFF" | "$PYTHON_PATH" -c 'import json,sys; print(json.dumps(sys.stdin.read())[1:-1])')
 
 # === Show diff sent to Gemini ===
 # echo "DIFF SENT TO GEMINI:"
 # echo "$ESCAPED_DIFF"
 
-# === 5️Construct prompt and payload ===
+# === Construct prompt and payload ===
 PROMPT="Write only one concise Git commit message for the following code changes. No explanations, no formatting, just the message in maximum 5-10 words."
 
 JSON_PAYLOAD=$(cat <<EOF
@@ -58,20 +58,20 @@ JSON_PAYLOAD=$(cat <<EOF
 EOF
 )
 
-# === 6️Call Gemini API ===
+# === Call Gemini API ===
 RESPONSE=$(curl -s -X POST \
   -H "Content-Type: application/json" \
   -d "$JSON_PAYLOAD" \
   "$GEMINI_URL?key=$API_KEY")
 
-# === 7️Debug output ===
+# === Debug output ===
 # echo "🔍 Gemini API Response:"
 # echo "$RESPONSE"
 
-# === 8️Extract commit message ===
+# === Extract commit message ===
 COMMIT_MSG=$(echo "$RESPONSE" | grep -oP '"text":\s*"\K[^"]+' | head -n 1)
 
-# === 9️Fallback if empty ===
+# === Fallback if empty ===
 if [[ -z "$COMMIT_MSG" ]]; then
     echo "Gemini did not return a valid commit message. Using fallback."
     COMMIT_MSG="Auto commit"
