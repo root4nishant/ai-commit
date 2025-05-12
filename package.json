@@ -7,8 +7,8 @@
     "ai-commit": "./bin/commit"
   },
   "scripts": {
-  "gemmit": "bash ./bin/commit"
-},
+    "gemmit": "bash ./bin/commit"
+  },
   "keywords": [
     "git",
     "ai",
