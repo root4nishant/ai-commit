@@ -131,7 +131,7 @@ git push
 
 ## 📄 License
 
-MIT © [Your Name]
+MIT © root4nishant
 
 ---
 
@@ -139,4 +139,3 @@ MIT © [Your Name]
 
 - [Gemini API (Google AI)](https://ai.google.dev/)
 - Bash scripting
-- Open source ❤️
