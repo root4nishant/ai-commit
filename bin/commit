@@ -94,4 +94,4 @@ echo "Commit message: $FINAL_COMMIT_MSG"
 git commit -m "$FINAL_COMMIT_MSG"
 git push
 
-echo " Done!"
+echo "Pushed, Done!"
