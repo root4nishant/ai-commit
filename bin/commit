@@ -55,8 +55,8 @@ RESPONSE=$(curl -s -X POST \
   -d "$JSON_PAYLOAD" \
   "$GEMINI_URL?key=$API_KEY")
 
-# echo "Gemini API Response:"
-# echo "$RESPONSE"
+echo "Gemini API Response:"
+echo "$RESPONSE"
 
 COMMIT_MSG=$(echo "$RESPONSE" | grep -oP '"text":\s*"\K[^"]+' | head -n 1)
 
