@@ -1,14 +1,11 @@
 #!/usr/bin/env bash
 
 
-# === LOAD USER CONFIG ===
 source "$(dirname "$0")/../config/config.sh"
 
-# === DYNAMIC CONFIG ===
 GEMINI_URL="https://generativelanguage.googleapis.com/v1beta/models/$MODEL_NAME:generateContent"
 MAX_LENGTH=2000
 
-# === prefix like: ./commit.sh -- "fix #1" ===
 PREFIX=""
 for i in "$@"; do
   if [[ "$i" == "--" ]]; then
@@ -18,29 +15,24 @@ for i in "$@"; do
   fi
 done
 
-# === Check for changes ===
 if [[ -z $(git status --porcelain) ]]; then
     echo "No changes to commit."
     exit 0
 fi
 
-# === Stage changes ===
 git add .
 
-# === Get and trim diff ===
 DIFF=$(git diff --cached)
 if [ ${#DIFF} -gt $MAX_LENGTH ]; then
     DIFF="${DIFF:0:$MAX_LENGTH}..."
 fi
 
-# === Escape diff for JSON using Python ===
 ESCAPED_DIFF=$(printf '%s' "$DIFF" | "$PYTHON_PATH" -c 'import json,sys; print(json.dumps(sys.stdin.read())[1:-1])')
 
 # === Show diff sent to Gemini ===
 # echo "DIFF SENT TO GEMINI:"
 # echo "$ESCAPED_DIFF"
 
-# === Construct prompt and payload ===
 PROMPT="Write only one concise Git commit message for the following code changes. No explanations, no formatting, just the message in maximum 5-10 words."
 
 JSON_PAYLOAD=$(cat <<EOF
@@ -58,26 +50,21 @@ JSON_PAYLOAD=$(cat <<EOF
 EOF
 )
 
-# === Call Gemini API ===
 RESPONSE=$(curl -s -X POST \
   -H "Content-Type: application/json" \
   -d "$JSON_PAYLOAD" \
   "$GEMINI_URL?key=$API_KEY")
 
-# === Debug output ===
-# echo "🔍 Gemini API Response:"
+# echo "Gemini API Response:"
 # echo "$RESPONSE"
 
-# === Extract commit message ===
 COMMIT_MSG=$(echo "$RESPONSE" | grep -oP '"text":\s*"\K[^"]+' | head -n 1)
 
-# === Fallback if empty ===
 if [[ -z "$COMMIT_MSG" ]]; then
     echo "Gemini did not return a valid commit message. Using fallback."
     COMMIT_MSG="Auto commit"
 fi
 
-# === Clean merge and strip newline ===
 if [[ -n "$PREFIX" ]]; then
   CLEAN_PREFIX=$(echo "$PREFIX" | awk '{print tolower($1)}')
   CLEAN_COMMIT=$(echo "$COMMIT_MSG" | sed -E "s/^($CLEAN_PREFIX[:]?)[[:space:]]+//i")
@@ -90,7 +77,6 @@ FINAL_COMMIT_MSG=$(echo "$FINAL_COMMIT_MSG" | sed 's/\\n//g' | tr -d '\n\r')
 
 echo "Commit message: $FINAL_COMMIT_MSG"
 
-# === Commit and push ===
 git commit -m "$FINAL_COMMIT_MSG"
 git push
 
