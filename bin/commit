@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+API_KEY=""
+MODEL_NAME="gemini-2.0-flash"
+PYTHON_PATH="/c/Users/root4nishant/AppData/Local/Programs/Python/Python313/python.exe"
+
 
 source "$(dirname "$0")/../config/config.sh"
 
