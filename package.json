@@ -1,20 +1,19 @@
 {
-  "name": "gemmit",
+  "name": "gemmit-cli",
   "version": "1.0.0",
-  "description": "Auto-generate Git commit messages using Gemini AI.",
-  "main": "index.js",
+  "description": "AI-powered commit message generator with GitHub Auth and credit system.",
+  "main": "bin/gemmit.js",
   "bin": {
-    "ai-commit": "./bin/commit"
+    "gemmit": "./bin/gemmit.js"
   },
   "scripts": {
-    "gemmit": "bash ./bin/commit"
+    "start": "node ./bin/gemmit.js"
   },
-  "keywords": [
-    "git",
-    "ai",
-    "commit",
-    "gemini"
-  ],
+  "dependencies": {
+    "axios": "^1.10.0",
+    "inquirer": "^9.2.4",
+    "open": "^9.0.0"
+  },
   "author": "root4nishant",
   "license": "MIT"
 }
