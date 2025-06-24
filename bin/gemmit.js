@@ -20,7 +20,7 @@ const inquirer = require("inquirer");
     const numFiles = await getChangedFilesCount();
     let credits = await getCredits();
     if (credits < numFiles * 2) {
-      const { buy } = await inquirer.prompt([
+      const { buy } = await inquirer.default.prompt([
         {
           type: "confirm",
           name: "buy",

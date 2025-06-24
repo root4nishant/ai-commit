@@ -8,7 +8,12 @@ async function githubDeviceLogin() {
   // Real: Use device flow or provide instructions for user
   const url = `${BACKEND_URL}/auth/github`;
   console.log(`Opening browser for GitHub login at: ${url}`);
-  await open(url);
+  try {
+    await open.default(url);
+  } catch (err) {
+    console.error("[Gemmit] Failed to open browser:", err.message);
+    console.log("Please manually open:", url);
+  }
   const { token } = await waitForToken();
   setConfig("token", token);
   return token;
@@ -18,7 +23,7 @@ async function waitForToken() {
   // For demo: prompt user to paste token from backend,
   // or poll a /auth/pending endpoint if you implement it
   const inquirer = require("inquirer");
-  const { token } = await inquirer.prompt([
+  const { token } = await inquirer.default.prompt([
     {
       type: "input",
       name: "token",

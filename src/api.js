@@ -2,7 +2,7 @@ const axios = require("axios");
 const { getConfig, setConfig } = require("./config");
 const { githubDeviceLogin } = require("./auth");
 const open = require("open");
-
+console.log("[DEBUG] typeof open:", typeof open);
 const BACKEND_URL = process.env.GEMMIT_API || "http://localhost:4000";
 
 async function ensureAuthenticated() {
@@ -45,7 +45,7 @@ async function buyCredits() {
   const token = getConfig("token");
   const { data } = await axios.post(
     `${BACKEND_URL}/api/payment/create`,
-    { amount: 100 }, // INR, or set as desired
+    { amount: 100 },
     { headers: { Authorization: token } }
   );
   console.log("Opening payment link...");
