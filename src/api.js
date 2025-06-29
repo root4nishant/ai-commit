@@ -1,7 +1,7 @@
 const axios = require("axios");
 const { getConfig, setConfig } = require("./config");
 const { githubDeviceLogin } = require("./auth");
-const open = require("open");
+const open = require("open").default;
 console.log("[DEBUG] typeof open:", typeof open);
 const BACKEND_URL = process.env.GEMMIT_API || "http://localhost:4000";
 
